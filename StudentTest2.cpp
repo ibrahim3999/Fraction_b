@@ -282,7 +282,7 @@ TEST_SUITE("Overloaded + and - operator tests") {
         CHECK_EQ(Fraction{1, 4} + 0.75, Fraction{5, 5});
 
         // Adding a fraction to a complex floating-point number
-        CHECK_EQ(Fraction{1, 3} + 4.321, 4.654);
+        CHECK_EQ(Fraction{1, 3} + 4.321, Fraction{13963, 3000});
         CHECK_EQ(Fraction{2, 5} + 3.678, Fraction{2039, 500});
 
         // Subtracting a simple floating-point number from a fraction
@@ -290,8 +290,7 @@ TEST_SUITE("Overloaded + and - operator tests") {
         CHECK_EQ(Fraction{3, 4} - 0.5, Fraction{1, 4});
 
         // Subtracting a complex floating-point number from a fraction
-       CHECK_EQ(Fraction{7, 2} - 1.321, Fraction{2179, 1000});
-
+        CHECK_EQ(Fraction{7, 2} - 1.321, Fraction{2179, 1000});
         CHECK_EQ(Fraction{9, 4} - 0.678, Fraction{393, 250});
 
         // Subtracting a fraction from a simple floating-point number
@@ -299,7 +298,7 @@ TEST_SUITE("Overloaded + and - operator tests") {
         CHECK_EQ(1.0 - Fraction{1, 4}, Fraction{3, 4});
 
         // Subtracting a fraction from a complex floating-point number
-        CHECK_EQ(5.321 - Fraction{2, 3}, Fraction{2327, 500});
+        CHECK_EQ(5.321 - Fraction{2, 3}, Fraction{13963, 3000});
         CHECK_EQ(3.678 - Fraction{3, 4}, Fraction{366, 125});
 
         // Adding a simple floating-point number to a fraction (simple)
@@ -307,7 +306,7 @@ TEST_SUITE("Overloaded + and - operator tests") {
         CHECK_EQ(0.75 + Fraction{1, 5}, Fraction{19, 20});
 
         // Adding a complex floating-point number to a fraction
-        CHECK_EQ(4.321 + Fraction{1, 3}, Fraction{2327, 500});
+        CHECK_EQ(4.321 + Fraction{1, 3},  Fraction{13963, 3000});
         CHECK_EQ(3.678 + Fraction{2, 5}, Fraction{2039, 500});
     }
 
@@ -389,13 +388,11 @@ TEST_SUITE("Overloaded * operator tests") {
         //More complex floating point numbers
         CHECK_EQ(4.321 * Fraction{1, 3}, Fraction{4321, 3000});
         CHECK_EQ(Fraction{2, 5} * 3.678, Fraction{1839, 1250});
-       
     }
 
     TEST_CASE("Multiplying big fractions") {
         CHECK_EQ(Fraction{999, 1000} * Fraction{999, 1000}, Fraction{998001, 1000000});
-       
-        CHECK_EQ(Fraction{12345, 23456} * Fraction{34567, 45678}, Fraction{426920715, 1072143816});
+        CHECK_EQ(Fraction{12345, 23456} * Fraction{34567, 45678}, Fraction{426729615, 1071423168});
     }
 
     TEST_CASE("Inequality checks with floating-point numbers and fractions") {
@@ -424,8 +421,6 @@ TEST_SUITE("Overloaded * operator tests") {
         CHECK_NE(Fraction{12345, 23456} * Fraction{34567, 45678}, Fraction{426920715, 900000000});
     }
 }
-
-
 
 TEST_SUITE("Overloaded / operator tests") {
 
@@ -473,7 +468,7 @@ TEST_SUITE("Overloaded / operator tests") {
         CHECK_EQ(-0.8 / Fraction{3, 4}, Fraction{-16, 15});
 
         // Equality checks when dividing a floating-point number by a fraction, incorporating negatives
-         CHECK_EQ(Fraction{-2, 3} / 0.57, Fraction{-200, 171});
+        CHECK_EQ(Fraction{-2, 3} / 0.57, Fraction{-200, 171});
         CHECK_EQ(Fraction{3, -4} / -0.82, Fraction{75, 82});
 
 
@@ -720,16 +715,12 @@ TEST_CASE("Fraction with largest possible numerator and/or denominator and overf
 
     // Test largest possible numerator
     CHECK_NOTHROW(Fraction f1(max_int, 1));
-   
     Fraction f1(max_int, 1);
     CHECK_EQ(f1, Fraction(max_int, 1));
 
-    
     // Test largest possible denominator
     CHECK_NOTHROW(Fraction f2(1, max_int));
-    
     Fraction f2(1, max_int);
-
     CHECK_EQ(f2, Fraction(1, max_int));
 
     // Test largest possible numerator and denominator
@@ -738,17 +729,13 @@ TEST_CASE("Fraction with largest possible numerator and/or denominator and overf
     CHECK_EQ(f3, Fraction(1, 1));
 
     // Test arithmetic with large numerator and/or denominator
-    
     Fraction f4(max_int - 100, max_int);
+
     CHECK_THROWS_AS(f1 * f4, std::overflow_error);
     CHECK_THROWS_AS(f1 / f4, std::overflow_error);
- 
+
     CHECK_THROWS_AS(f2 * f4, std::overflow_error);
-    CHECK_THROWS_AS(f2 / f4, std::overflow_error); 
-    /**/
-    Fraction f=f3 * f4;
-    cout << f.getDenominator() << endl;
-    cout << f.getNumerator() << endl;
+    CHECK_THROWS_AS(f2 / f4, std::overflow_error); //
 
     CHECK_NOTHROW(f3 * f4);
     CHECK_NOTHROW(f4 / f3);
